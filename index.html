@@ -60,39 +60,39 @@
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* 左上ロゴ（1行） */
+  /* 左上ロゴ（位置をさらに隅へ・2行中央揃え・サイズ大） */
   .header-logo {
-    position: absolute; top: 35px; left: 40px; z-index: 200;
-    font-size: 14px;
+    position: absolute; top: 30px; left: 30px; z-index: 200;
+    font-size: 13px; line-height: 1.3;
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+    text-align: center;
   }
 
-  /* 右上ダウンロードボタン（外円を削除） */
+  /* 右上ダウンロードボタン（精密デザイン） */
   .download-area {
-    position: absolute; top: 30px; right: 40px; z-index: 200;
+    position: absolute; top: 30px; right: 30px; z-index: 200;
   }
   .btn-dl-minimal {
     width: 56px; height: 56px; background: #fff; 
-    border: 1px solid #eee; border-radius: 50%; /* 薄い円のみ */
+    border: 1px solid #ddd; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; transition: 0.3s;
   }
-  .btn-dl-minimal svg { width: 22px; height: 22px; fill: none; stroke: var(--text-black); stroke-width: 1.5; }
+  .btn-dl-minimal svg { width: 22px; height: 22px; fill: none; stroke: var(--text-black); stroke-width: 1.3; }
   .btn-dl-minimal:hover { border-color: var(--text-black); transform: scale(1.05); }
 
-  /* STEP PANEL */
+  /* STEP PANEL (高さを引き上げ) */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 0; /* 内部パーツで調整 */
-    justify-content: center;
+    padding: 30px 20px 0 20px; /* 上パディングを減らしてコンテンツを上げた */
     z-index: 100;
   }
 
   .step-nav {
     display: flex; align-items: center; justify-content: center;
     gap: 70px; width: 100%; max-width: 850px;
-    margin-top: 10px; /* 垂直位置の微調整 */
   }
   .nav-arrow {
     width: 54px; height: 54px; border-radius: 50%; border: 1px solid #ddd;
@@ -103,7 +103,7 @@
   .nav-arrow:hover:not(.disabled) { background: #000; color: #fff; border-color: #000; }
   .nav-arrow.disabled { opacity: 0.1; cursor: default; }
 
-  #steps-container { width: 360px; flex-shrink: 0; min-height: 120px; display: flex; align-items: center; justify-content: center; }
+  #steps-container { width: 360px; flex-shrink: 0; min-height: 140px; display: flex; align-items: center; justify-content: center; }
   .step-content { text-align: center; display: none; width: 100%; }
   .step-content.active { display: block; animation: slideUp 0.4s ease forwards; }
   @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -114,7 +114,6 @@
   input[type=range] { -webkit-appearance: none; width: 100%; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
-  /* COLOR STEP LAYOUT FIX */
   .color-grid { display: flex; gap: 15px; justify-content: center; align-items: center; height: 20px; margin-top: 10px; }
   .color-dot { width: 34px; height: 34px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; position: relative; }
   .color-dot.active { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000; }
@@ -134,7 +133,9 @@
 
 <div id="main-page" class="page">
   <div id="viewer-container">
-    <div class="header-logo typo-logo">Horn Generator</div>
+    <div class="header-logo">
+      Horn Generation<br>System
+    </div>
     <div class="download-area">
       <button class="btn-dl-minimal" onclick="downloadModel()" title="Download .obj">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -294,7 +295,7 @@ function createSolidHorn(isBranch = false, startPos = new THREE.Vector3(), scale
     const n = frames.normals[i], b = frames.binormals[i];
     for (let j = 0; j <= radialSegments; j++) {
       const theta = (j/radialSegments)*Math.PI*2;
-      const v = new THREE.Vector3().copy(p).add(n.clone().multiplyScalar(Math.cos(theta)*r)).add(b.clone().multiplyScalar(Math.sin(theta)*r));
+      const v = new THREE.Vector3().copy(p).add(n.clone().multiplyScalar(Math.cos(theta)*r)).add(b.clone().multiplyScalar(Math.sin(theta) * r));
       vertices.push(v.x, v.y, v.z);
     }
   }
