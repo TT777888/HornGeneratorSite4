@@ -30,40 +30,45 @@
   }
   .page.active { display: flex; opacity: 1; z-index: 10; }
 
-  /* ── START SCREEN (Typography Focused) ── */
+  /* ── START SCREEN ── */
   #intro-page {
     background: var(--bg-white);
     justify-content: center; align-items: center;
     text-align: center;
   }
   .intro-title {
-    font-size: 42px; font-weight: 800; letter-spacing: -0.02em;
-    margin-bottom: 10px; text-transform: uppercase;
+    font-size: 28px; font-weight: 800; letter-spacing: 0.1em; /* 少し小さく、スリムに */
+    margin-bottom: 8px; text-transform: uppercase;
   }
   .intro-subtitle {
-    font-size: 11px; color: #888; letter-spacing: 0.5em;
-    margin-bottom: 60px; text-transform: uppercase;
+    font-size: 10px; color: #aaa; letter-spacing: 0.4em;
+    margin-bottom: 50px; text-transform: uppercase;
   }
   
-  /* 共通ボタン形状 */
+  /* 共通ボタン: 大型化 & インタラクション追加 */
   .btn-primary {
-    padding: 14px 40px; background: var(--text-black); border: none;
-    color: #fff; cursor: pointer; font-size: 10px; letter-spacing: 0.25em;
-    font-weight: 800; transition: 0.3s;
+    padding: 18px 54px; /* サイズアップ */
+    background: var(--text-black); border: none;
+    color: #fff; cursor: pointer; font-size: 11px; letter-spacing: 0.25em;
+    font-weight: 800; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
     border-radius: 4px; text-transform: uppercase;
+    display: inline-block;
   }
-  .btn-primary:hover { opacity: 0.7; }
+  .btn-primary:hover { 
+    transform: scale(1.08); /* カーソルを当てると大きくなる */
+    opacity: 0.9;
+  }
 
   /* ── MAIN CUSTOMIZER ── */
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* STEP PANEL */
+  /* STEP PANEL (位置の微調整) */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 60px 20px 40px 20px; /* 上パディングを増やして中身を下げた */
+    padding: 40px 20px; /* パラメータ高さを中間地点に調整 */
     z-index: 100;
   }
 
@@ -83,15 +88,15 @@
   .step-content.active { display: block; animation: slideUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
   @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  .step-counter { font-size: 10px; color: #aaa; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
-  .step-name { font-size: 28px; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.01em; }
+  .step-counter { font-size: 9px; color: #aaa; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
+  .step-name { font-size: 26px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
 
   /* CUSTOM UI */
-  input[type=range] { -webkit-appearance: none; width: 320px; height: 2px; background: #ddd; outline: none; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
+  input[type=range] { -webkit-appearance: none; width: 300px; height: 2px; background: #ddd; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
   .color-grid { display: flex; gap: 20px; justify-content: center; }
-  .color-dot { width: 38px; height: 38px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; }
+  .color-dot { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; }
   .color-dot.active { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000; }
 
   .finish-area { position: absolute; bottom: 30px; right: 40px; }
@@ -102,7 +107,7 @@
 <div id="intro-page" class="page active">
   <div class="intro-title">Horn Generation System</div>
   <div class="intro-subtitle">Bio-Digital Specimen Customizer</div>
-  <button class="btn-primary" onclick="startApp()">Enter Customizer</button>
+  <button class="btn-primary" onclick="startApp()">Start Generating</button>
 </div>
 
 <div id="main-page" class="page">
@@ -152,7 +157,7 @@
     </div>
 
     <div class="finish-area">
-      <button class="btn-primary" onclick="newDNA()">REGENERATE</button>
+      <button class="btn-primary" onclick="newDNA()">Regenerate</button>
     </div>
   </div>
 </div>
@@ -258,7 +263,6 @@ function createSolidHorn(isBranch = false, startPos = new THREE.Vector3(), scale
       indices.push(a, b, d, b, c, d);
     }
   }
-  // Caps
   const bottomCenterIdx = vertices.length / 3;
   const pStart = curve.getPointAt(0); vertices.push(pStart.x, pStart.y, pStart.z);
   for (let j = 0; j < radialSegments; j++) indices.push(bottomCenterIdx, j + 1, j);
