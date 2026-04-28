@@ -36,26 +36,25 @@
     justify-content: center; align-items: center;
     text-align: center;
   }
-  .intro-title {
-    font-size: 28px; font-weight: 800; letter-spacing: 0.1em; /* 少し小さく、スリムに */
-    margin-bottom: 8px; text-transform: uppercase;
+  .logo-container {
+    width: 320px; margin-bottom: 20px;
   }
+  .logo-container img { width: 100%; height: auto; }
+  
   .intro-subtitle {
-    font-size: 10px; color: #aaa; letter-spacing: 0.4em;
-    margin-bottom: 50px; text-transform: uppercase;
+    font-size: 10px; color: #aaa; letter-spacing: 0.2em;
+    margin-bottom: 60px;
   }
   
-  /* 共通ボタン: 大型化 & インタラクション追加 */
   .btn-primary {
-    padding: 18px 54px; /* サイズアップ */
+    padding: 18px 54px;
     background: var(--text-black); border: none;
     color: #fff; cursor: pointer; font-size: 11px; letter-spacing: 0.25em;
     font-weight: 800; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
     border-radius: 4px; text-transform: uppercase;
-    display: inline-block;
   }
   .btn-primary:hover { 
-    transform: scale(1.08); /* カーソルを当てると大きくなる */
+    transform: scale(1.08);
     opacity: 0.9;
   }
 
@@ -63,12 +62,28 @@
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* STEP PANEL (位置の微調整) */
+  /* UIレイアウト (ロゴ・ダウンロード) */
+  .header-logo {
+    position: absolute; top: 30px; left: 40px; z-index: 200;
+  }
+  .header-logo img { height: 28px; width: auto; }
+
+  .download-area {
+    position: absolute; top: 30px; right: 40px; z-index: 200;
+  }
+  .btn-download {
+    padding: 12px 24px; background: #fff; border: 1px solid var(--text-black);
+    color: var(--text-black); cursor: pointer; font-size: 10px; letter-spacing: 0.15em;
+    font-weight: 800; border-radius: 4px; text-transform: uppercase; transition: 0.3s;
+  }
+  .btn-download:hover { background: var(--text-black); color: #fff; transform: translateY(-2px); }
+
+  /* STEP PANEL */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 40px 20px; /* パラメータ高さを中間地点に調整 */
+    padding: 45px 20px; /* パラメータ位置の調整 */
     z-index: 100;
   }
 
@@ -91,7 +106,6 @@
   .step-counter { font-size: 9px; color: #aaa; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
   .step-name { font-size: 26px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
 
-  /* CUSTOM UI */
   input[type=range] { -webkit-appearance: none; width: 300px; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
@@ -105,13 +119,21 @@
 <body>
 
 <div id="intro-page" class="page active">
-  <div class="intro-title">Horn Generation System</div>
-  <div class="intro-subtitle">Bio-Digital Specimen Customizer</div>
+  <div class="logo-container">
+    <img src="HornGenerator_rogo_black.png" alt="TSUNO">
+  </div>
+  <div class="intro-subtitle">Produced By Shachihata Inc.</div>
   <button class="btn-primary" onclick="startApp()">Start Generating</button>
 </div>
 
 <div id="main-page" class="page">
   <div id="viewer-container">
+    <div class="header-logo">
+      <img src="HornGenerator_rogo_black.png" alt="TSUNO">
+    </div>
+    <div class="download-area">
+      <button class="btn-download" onclick="downloadModel()">Download Model (.obj)</button>
+    </div>
     <div id="three-canvas" style="width:100%; height:100%;"></div>
   </div>
 
@@ -174,6 +196,7 @@
 <script type="module">
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { OBJExporter } from "three/addons/exporters/OBJExporter.js";
 
 let settings = { size: 3, bend: 3, bump: 3, branch: 1, color: "#ffffff" };
 let dna = { seedX: Math.random()*5, seedZ: Math.random()*5, noise: Array.from({length: 120}, () => Math.random()) };
@@ -198,6 +221,19 @@ window.newDNA = () => {
   dna.seedX = Math.random() * 5; dna.seedZ = Math.random() * 5;
   dna.noise = Array.from({length: 120}, () => Math.random());
   updateModel();
+};
+
+window.downloadModel = () => {
+  const exporter = new OBJExporter();
+  const result = exporter.parse(hornGroup);
+  const blob = new Blob([result], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.href = URL.createObjectURL(blob);
+  link.download = 'custom_horn.obj';
+  link.click();
+  document.body.removeChild(link);
 };
 
 let scene, camera, renderer, controls, hornGroup;
@@ -302,10 +338,13 @@ function animate() {
 }
 
 ['size', 'bend', 'bump', 'branch'].forEach(id => {
-  document.getElementById('i-' + id).oninput = (e) => {
-    settings[id] = parseInt(e.target.value);
-    updateModel();
-  };
+  const el = document.getElementById('i-' + id);
+  if (el) {
+    el.oninput = (e) => {
+      settings[id] = parseInt(e.target.value);
+      updateModel();
+    };
+  }
 });
 
 document.getElementById('palette').onclick = (e) => {
