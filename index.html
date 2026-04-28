@@ -85,12 +85,12 @@
   .btn-dl-minimal svg { width: 24px; height: 24px; fill: none; stroke: var(--text-black); stroke-width: 1.3; }
   .btn-dl-minimal:hover { border-color: var(--text-black); transform: scale(1.05); }
 
-  /* STEP PANEL */
+  /* STEP PANEL (高さをほんの若干下げるためにパディングを調整) */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 15px 20px 0 20px;
+    padding: 22px 20px 0 20px; /* 15pxから22pxにして若干下げた */
     z-index: 100;
   }
 
@@ -121,12 +121,8 @@
 
   .range-guides {
     display: flex; justify-content: space-between;
-    margin-top: 10px; 
-    font-size: 9px; /* 他のテキストガイドとサイズを厳密に統一 */
-    color: #ccc;
-    font-weight: 700; 
-    text-transform: uppercase; 
-    letter-spacing: 0.1em;
+    margin-top: 10px; font-size: 9px; color: #ccc;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
     font-family: var(--font-ui);
   }
 
@@ -218,7 +214,7 @@
     </div>
 
     <div class="finish-area">
-      <button class="btn-ui-main" onclick="newDNA()" style="padding: 14px 40px; font-size: 10px;">Regenerate</button>
+      <button class="btn-ui-main" onclick="newDNA()" style="padding: 14px 44px; font-size: 10px;">Regenerate</button>
     </div>
   </div>
 </div>
