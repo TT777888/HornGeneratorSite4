@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TSUNO | CUSTOMIZER</title>
+<title>TSUNO | BIO-DIGITAL CUSTOMIZER</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg-white: #ffffff;
-    --panel-bg: #f5f5f5;
-    --text-black: #111111;
+    --panel-bg: #f7f7f7;
+    --text-black: #000000;
     --border: #e5e5e5;
   }
   body { 
@@ -22,112 +22,92 @@
     height: 100vh;
   }
 
-  /* ── ページ遷移 ── */
+  /* ── Page Management ── */
   .page {
     position: absolute; inset: 0;
     display: none; flex-direction: column;
-    opacity: 0; transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0; transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .page.active { display: flex; opacity: 1; z-index: 10; }
 
-  /* ── スタート画面 (Nike風ミニマル) ── */
+  /* ── START SCREEN (Minimal High-End) ── */
   #intro-page {
     background: var(--bg-white);
     justify-content: center; align-items: center;
   }
-  .intro-content {
-    display: flex; flex-direction: column; align-items: center;
-    max-width: 400px; width: 90%;
-  }
   .logo-container {
-    width: 100%; margin-bottom: 60px;
-    display: flex; justify-content: center;
+    width: 380px; margin-bottom: 80px;
+    pointer-events: none; /* ロゴ自体はクリック不可に */
   }
-  .logo-container img {
-    max-width: 320px; width: 100%; height: auto;
-    object-fit: contain;
-  }
-  .start-btn {
-    padding: 18px 80px; background: var(--text-black); border: none;
-    color: #fff; cursor: pointer; font-size: 13px; letter-spacing: 0.5em;
-    font-weight: 700; transition: all 0.4s ease;
-    text-transform: uppercase;
-  }
-  .start-btn:hover { background: #333; transform: scale(1.05); letter-spacing: 0.6em; }
-
-  /* ── カスタム画面 ── */
-  #main-page { display: flex; flex-direction: column; }
+  .logo-container img { width: 100%; height: auto; }
   
-  #viewer-container { 
-    flex: 1; position: relative; background: #fff; 
+  .start-btn {
+    padding: 14px 70px; background: var(--text-black); border: none;
+    color: #fff; cursor: pointer; font-size: 12px; letter-spacing: 0.4em;
+    font-weight: 700; transition: 0.3s;
+    border-radius: 30px; /* NIKE風の丸みのあるボタン */
   }
-  #three-canvas { width: 100%; height: 100%; }
+  .start-btn:hover { background: #333; transform: scale(1.05); }
 
-  /* 下部ステップパネル */
+  /* ── MAIN CUSTOMIZER ── */
+  #main-page { display: flex; flex-direction: column; }
+  #viewer-container { flex: 1; background: #fff; position: relative; }
+
+  /* STEP PANEL */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 40px 20px; position: relative;
-    z-index: 100;
+    padding: 40px 20px; z-index: 100;
   }
 
   .step-nav {
     display: flex; align-items: center; justify-content: center;
-    gap: 60px; width: 100%; max-width: 800px;
+    gap: 80px; width: 100%; max-width: 800px;
   }
   .nav-arrow {
-    width: 50px; height: 50px; border-radius: 50%; border: 1px solid #ccc;
+    width: 54px; height: 54px; border-radius: 50%; border: 1px solid #ddd;
     background: #fff; cursor: pointer; display: flex; align-items: center;
-    justify-content: center; transition: 0.3s; font-size: 24px;
-    color: var(--text-black);
+    justify-content: center; transition: 0.2s; font-size: 20px;
   }
-  .nav-arrow:hover { background: var(--text-black); color: #fff; border-color: var(--text-black); }
-  .nav-arrow.disabled { opacity: 0.1; cursor: default; pointer-events: none; }
+  .nav-arrow:hover { background: #000; color: #fff; border-color: #000; }
+  .nav-arrow.disabled { opacity: 0.1; pointer-events: none; }
 
   .step-content { text-align: center; flex: 1; display: none; }
-  .step-content.active { display: block; animation: slideUp 0.5s ease forwards; }
-  
-  @keyframes slideUp { 
-    from { opacity: 0; transform: translateY(20px); } 
-    to { opacity: 1; transform: translateY(0); } 
-  }
+  .step-content.active { display: block; animation: slideUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-  .step-title { font-size: 11px; color: #999; letter-spacing: 0.4em; margin-bottom: 10px; font-weight: 700; }
-  .step-name { font-size: 28px; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.01em; }
+  .step-title { font-size: 10px; color: #aaa; letter-spacing: 0.4em; margin-bottom: 10px; font-weight: 700; }
+  .step-name { font-size: 32px; font-weight: 800; margin-bottom: 30px; letter-spacing: -0.01em; }
 
-  /* カスタムUI要素 */
-  input[type=range] { -webkit-appearance: none; width: 320px; height: 2px; background: #ddd; outline: none; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+  /* CUSTOM UI */
+  input[type=range] { -webkit-appearance: none; width: 340px; height: 2px; background: #ddd; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
 
-  .color-grid { display: flex; gap: 20px; justify-content: center; }
-  .color-dot { width: 38px; height: 38px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-  .color-dot:hover { transform: scale(1.2); }
+  .color-grid { display: flex; gap: 24px; justify-content: center; }
+  .color-dot { width: 42px; height: 42px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.3s; }
   .color-dot.active { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000; }
 
   .finish-area { position: absolute; bottom: 30px; right: 50px; }
   .gen-btn {
-    padding: 14px 30px; background: var(--text-black); color: #fff; border: none;
-    font-family: 'Syne'; font-size: 11px; cursor: pointer; font-weight: 700; letter-spacing: 0.2em;
-    transition: 0.3s;
+    padding: 14px 28px; background: #000; color: #fff; border: none;
+    font-family: 'Syne'; font-size: 10px; cursor: pointer; font-weight: 800; letter-spacing: 0.2em;
+    border-radius: 4px;
   }
-  .gen-btn:hover { opacity: 0.8; }
 </style>
 </head>
 <body>
 
 <div id="intro-page" class="page active">
-  <div class="intro-content">
-    <div class="logo-container">
-      <img src="HornGenerator_rogo_black.png" alt="TSUNO" onerror="this.src='https://placehold.jp/32/111111/ffffff/300x100.png?text=TSUNO'">
-    </div>
-    <button class="start-btn" onclick="startApp()">Enter Studio</button>
+  <div class="logo-container">
+    <img src="HornGenerator_rogo_black.png" alt="TSUNO LOGO">
   </div>
+  <button class="start-btn" onclick="startApp()">START CUSTOMIZING</button>
 </div>
 
 <div id="main-page" class="page">
   <div id="viewer-container">
-    <div id="three-canvas"></div>
+    <div id="three-canvas" style="width:100%; height:100%;"></div>
   </div>
 
   <div id="step-panel">
@@ -135,35 +115,35 @@
       <button class="nav-arrow" id="prev-btn" onclick="changeStep(-1)">←</button>
       
       <div id="steps-container">
-        <div class="step-content active">
+        <div class="step-content active" data-step="0">
           <p class="step-title">STEP 01</p>
           <p class="step-name">SIZE</p>
           <input id="i-size" type="range" min="1" max="5" value="3">
         </div>
-        <div class="step-content">
+        <div class="step-content" data-step="1">
           <p class="step-title">STEP 02</p>
           <p class="step-name">CURVE</p>
           <input id="i-bend" type="range" min="1" max="5" value="3">
         </div>
-        <div class="step-content">
+        <div class="step-content" data-step="2">
           <p class="step-title">STEP 03</p>
           <p class="step-name">BUMP</p>
           <input id="i-bump" type="range" min="1" max="5" value="3">
         </div>
-        <div class="step-content">
+        <div class="step-content" data-step="3">
           <p class="step-title">STEP 04</p>
           <p class="step-name">BRANCHES</p>
           <input id="i-branch" type="range" min="1" max="5" value="1">
         </div>
-        <div class="step-content">
+        <div class="step-content" data-step="4">
           <p class="step-title">STEP 05</p>
           <p class="step-name">COLOR</p>
           <div class="color-grid" id="palette">
             <div class="color-dot active" style="background:#ffffff;" data-color="#ffffff"></div>
-            <div class="color-dot" style="background:#f0f0f0;" data-color="#f0f0f0"></div>
+            <div class="color-dot" style="background:#f2f2f2;" data-color="#f2f2f2"></div>
             <div class="color-dot" style="background:#d4a373;" data-color="#d4a373"></div>
             <div class="color-dot" style="background:#8b7355;" data-color="#8b7355"></div>
-            <div class="color-dot" style="background:#222222;" data-color="#222222"></div>
+            <div class="color-dot" style="background:#1a1a1a;" data-color="#1a1a1a"></div>
           </div>
         </div>
       </div>
@@ -205,14 +185,12 @@ window.changeStep = (dir) => {
   steps[currentStep].classList.remove('active');
   currentStep = Math.max(0, Math.min(steps.length - 1, currentStep + dir));
   steps[currentStep].classList.add('active');
-  
   document.getElementById('prev-btn').classList.toggle('disabled', currentStep === 0);
   document.getElementById('next-btn').classList.toggle('disabled', currentStep === steps.length - 1);
 };
 
 window.newDNA = () => {
-  dna.seedX = Math.random() * 5;
-  dna.seedZ = Math.random() * 5;
+  dna.seedX = Math.random() * 5; dna.seedZ = Math.random() * 5;
   dna.noise = Array.from({length: 120}, () => Math.random());
   updateModel();
 };
@@ -225,27 +203,18 @@ function initThree() {
   scene.background = new THREE.Color(0xffffff);
 
   camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.set(0, 4, 15); // カメラを真正面気味に配置
+  camera.position.set(0, 5, 15);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
   document.getElementById("three-canvas").appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.minDistance = 5;
-  controls.maxDistance = 30;
 
-  // ライティング
   scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-  const light = new THREE.DirectionalLight(0xffffff, 1.0);
-  light.position.set(10, 10, 10);
-  scene.add(light);
-  const backLight = new THREE.PointLight(0xffffff, 0.5);
-  backLight.position.set(-10, -5, -10);
-  scene.add(backLight);
+  const l = new THREE.DirectionalLight(0xffffff, 1.0); l.position.set(10,20,10); scene.add(l);
 
   hornGroup = new THREE.Group();
   scene.add(hornGroup);
@@ -254,46 +223,81 @@ function initThree() {
   updateModel();
 }
 
-function createHornMesh(isBranch = false, startPos = new THREE.Vector3(), scale = 1.0, bId = 0) {
+// ── 中身の詰まった(蓋付き)モデルを生成 ──
+function createSolidHorn(isBranch = false, startPos = new THREE.Vector3(), scale = 1.0, bId = 0) {
   const points = [];
-  const segments = 100;
+  const segments = 80;
+  const radialSegments = 32;
   const len = settings.size * 1.5 * scale;
-  const bendStrength = settings.bend * 0.4;
+  const bS = settings.bend * 0.4;
 
   for (let i = 0; i <= 10; i++) {
     const t = i / 10;
     let x, z;
     if (!isBranch) {
-      x = Math.sin(t * Math.PI * 0.4 + dna.seedX) * bendStrength * t * 2.5;
-      z = Math.cos(t * Math.PI * 0.4 + dna.seedZ) * bendStrength * t * 2.5;
+      x = Math.sin(t * Math.PI * 0.4 + dna.seedX) * bS * t * 2.5;
+      z = Math.cos(t * Math.PI * 0.4 + dna.seedZ) * bS * t * 2.5;
     } else {
       const angle = (bId / settings.branch) * Math.PI * 2 + dna.seedX;
-      x = Math.cos(angle) * (t * 2.2);
-      z = Math.sin(angle) * (t * 2.2);
+      x = Math.cos(angle) * (t * 2.2); z = Math.sin(angle) * (t * 2.2);
     }
     points.push(new THREE.Vector3(x, t * len, z).add(startPos));
   }
 
   const curve = new THREE.CatmullRomCurve3(points);
-  const baseR = (isBranch ? 0.2 : 0.5) * (settings.size * 0.08 + 0.9);
-  const geo = new THREE.TubeGeometry(curve, segments, baseR, 32, false);
+  const baseR = (isBranch ? 0.2 : 0.45) * (settings.size * 0.08 + 0.9);
   
-  const pos = geo.attributes.position;
-  const tubePts = geo.parameters.path.getPoints(segments);
+  const vertices = [];
+  const indices = [];
+  const frames = curve.computeFrenetFrames(segments, false);
 
-  for (let i = 0; i < pos.count; i++) {
-    const tIdx = Math.floor(i / (geo.parameters.radialSegments + 1));
-    const t = tIdx / segments;
-    const bump = 1 + (Math.sin(t * 30) * 0.5 + (dna.noise[tIdx] - 0.5)) * (settings.bump * 0.04) * (1-t);
-    const v = new THREE.Vector3().fromBufferAttribute(pos, i);
-    const c = tubePts[tIdx];
-    const d = new THREE.Vector3().subVectors(v, c).normalize();
-    v.copy(c).add(d.multiplyScalar(baseR * Math.pow(1 - t, 0.9) * bump));
-    pos.setXYZ(i, v.x, v.y, v.z);
+  // 頂点生成
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    const bump = 1 + (Math.sin(t * 30) * 0.5 + (dna.noise[i] - 0.5)) * (settings.bump * 0.04) * (1-t);
+    const r = baseR * Math.pow(1 - t, 0.9) * bump;
+    const p = curve.getPointAt(t);
+    const n = frames.normals[i], b = frames.binormals[i];
+
+    for (let j = 0; j <= radialSegments; j++) {
+      const theta = (j / radialSegments) * Math.PI * 2;
+      const v = new THREE.Vector3().copy(p)
+        .add(n.clone().multiplyScalar(Math.cos(theta) * r))
+        .add(b.clone().multiplyScalar(Math.sin(theta) * r));
+      vertices.push(v.x, v.y, v.z);
+    }
   }
+
+  // 側面インデックス
+  for (let i = 0; i < segments; i++) {
+    for (let j = 0; j < radialSegments; j++) {
+      const a = i * (radialSegments + 1) + j;
+      const b = (i + 1) * (radialSegments + 1) + j;
+      const c = (i + 1) * (radialSegments + 1) + (j + 1);
+      const d = i * (radialSegments + 1) + (j + 1);
+      indices.push(a, b, d, b, c, d);
+    }
+  }
+
+  // ★ 蓋(Bottom Cap) 
+  const bottomCenterIdx = vertices.length / 3;
+  const pStart = curve.getPointAt(0);
+  vertices.push(pStart.x, pStart.y, pStart.z);
+  for (let j = 0; j < radialSegments; j++) indices.push(bottomCenterIdx, j + 1, j);
+
+  // ★ 蓋(Top Cap) 
+  const topCenterIdx = vertices.length / 3;
+  const pEnd = curve.getPointAt(1);
+  vertices.push(pEnd.x, pEnd.y, pEnd.z);
+  const lastRingStart = segments * (radialSegments + 1);
+  for (let j = 0; j < radialSegments; j++) indices.push(topCenterIdx, lastRingStart + j, lastRingStart + j + 1);
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  geo.setIndex(indices);
   geo.computeVertexNormals();
 
-  const mat = new THREE.MeshPhysicalMaterial({ color: settings.color, roughness: 0.5, metalness: 0.05 });
+  const mat = new THREE.MeshPhysicalMaterial({ color: settings.color, roughness: 0.5, metalness: 0.05, side: THREE.DoubleSide });
   return { mesh: new THREE.Mesh(geo, mat), curve: curve };
 }
 
@@ -301,29 +305,21 @@ function updateModel() {
   if(!hornGroup) return;
   while(hornGroup.children.length > 0) {
     const c = hornGroup.children[0];
-    c.geometry.dispose(); c.material.dispose();
-    hornGroup.remove(c);
+    c.geometry.dispose(); c.material.dispose(); hornGroup.remove(c);
   }
 
-  const main = createHornMesh();
+  const main = createSolidHorn();
   hornGroup.add(main.mesh);
 
-  const bc = settings.branch - 1;
-  for (let i = 0; i < bc; i++) {
+  for (let i = 0; i < settings.branch - 1; i++) {
     const t = 0.2 + (i * 0.2);
-    const spawnPos = main.curve.getPointAt(t);
-    hornGroup.add(createHornMesh(true, spawnPos, 0.5, i).mesh);
+    hornGroup.add(createSolidHorn(true, main.curve.getPointAt(t), 0.5, i).mesh);
   }
 
-  // ★ 常に中央に配置するための計算 ★
+  // ★ 重心回転の徹底 ★
   const box = new THREE.Box3().setFromObject(hornGroup);
-  const center = new THREE.Vector3();
-  box.getCenter(center);
-  // モデルの位置を自身の中心分マイナスして原点(0,0,0)に持ってくる
-  hornGroup.children.forEach(mesh => {
-    mesh.position.sub(center);
-  });
-  // OrbitControlsのターゲットも原点に固定
+  const center = new THREE.Vector3(); box.getCenter(center);
+  hornGroup.children.forEach(m => m.position.sub(center));
   controls.target.set(0, 0, 0);
 }
 
@@ -333,7 +329,6 @@ function animate() {
   if (renderer) renderer.render(scene, camera);
 }
 
-// UIリスナー
 ['size', 'bend', 'bump', 'branch'].forEach(id => {
   document.getElementById('i-' + id).oninput = (e) => {
     settings[id] = parseInt(e.target.value);
@@ -357,7 +352,6 @@ window.onresize = () => {
   camera.updateProjectionMatrix();
   renderer.setSize(c.clientWidth, c.clientHeight);
 };
-
 </script>
 </body>
 </html>
