@@ -32,7 +32,7 @@
 
   /* ── TYPOGRAPHY LOGO ── */
   .typo-logo {
-    font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1;
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
   }
 
   /* ── START SCREEN ── */
@@ -41,16 +41,21 @@
     justify-content: center; align-items: center;
     text-align: center;
   }
-  .intro-logo { font-size: 32px; margin-bottom: 12px; }
+  .intro-logo { 
+    font-size: 30px; 
+    line-height: 1.4; /* 行間を広げてバランス調整 */
+    margin-bottom: 12px; 
+  }
   .intro-subtitle {
     font-size: 10px; color: #aaa; letter-spacing: 0.25em;
-    margin-bottom: 60px; font-weight: 400;
+    margin-bottom: 45px; /* ボタンを上げるためにマージンを縮小 */
+    font-weight: 400;
   }
   
   .btn-primary {
-    padding: 20px 60px;
+    padding: 18px 54px;
     background: var(--text-black); border: none;
-    color: #fff; cursor: pointer; font-size: 12px; letter-spacing: 0.3em;
+    color: #fff; cursor: pointer; font-size: 11px; letter-spacing: 0.25em;
     font-weight: 800; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
     border-radius: 4px; text-transform: uppercase;
   }
@@ -63,21 +68,21 @@
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* UIレイアウト (タイポロゴ・ダウンロードアイコン) */
+  /* 2行ロゴ（左上） */
   .header-logo {
-    position: absolute; top: 35px; left: 40px; z-index: 200;
-    font-size: 14px;
+    position: absolute; top: 30px; left: 30px; z-index: 200;
+    font-size: 10px; line-height: 1.3;
   }
 
   .download-area {
-    position: absolute; top: 30px; right: 40px; z-index: 200;
+    position: absolute; top: 30px; right: 30px; z-index: 200;
   }
   .btn-icon {
-    width: 48px; height: 48px; background: #fff; border: 1px solid var(--border);
+    width: 44px; height: 44px; background: #fff; border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; border-radius: 4px; transition: 0.3s;
   }
-  .btn-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .btn-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
   .btn-icon:hover { background: var(--text-black); color: #fff; transform: translateY(-2px); }
 
   /* STEP PANEL */
@@ -85,35 +90,44 @@
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 45px 20px;
+    padding: 40px 20px;
     z-index: 100;
   }
 
   .step-nav {
     display: flex; align-items: center; justify-content: center;
-    gap: 80px; width: 100%; max-width: 800px;
+    gap: 60px; width: 100%; max-width: 800px;
   }
   .nav-arrow {
-    width: 50px; height: 50px; border-radius: 50%; border: 1px solid #ddd;
+    width: 48px; height: 48px; border-radius: 50%; border: 1px solid #ddd;
     background: #fff; cursor: pointer; display: flex; align-items: center;
-    justify-content: center; transition: 0.2s; font-size: 18px;
+    justify-content: center; transition: 0.2s; font-size: 16px;
+    color: var(--text-black);
   }
-  .nav-arrow:hover { background: #000; color: #fff; border-color: #000; }
-  .nav-arrow.disabled { opacity: 0.1; pointer-events: none; }
+  .nav-arrow:hover:not(.disabled) { background: #000; color: #fff; border-color: #000; }
+  .nav-arrow.disabled { opacity: 0.15; cursor: default; }
 
-  .step-content { text-align: center; flex: 1; display: none; }
-  .step-content.active { display: block; animation: slideUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  /* コンテンツエリアを固定幅にして矢印のズレを防ぐ */
+  #steps-container { width: 340px; }
+  .step-content { text-align: center; display: none; }
+  .step-content.active { display: block; animation: slideUp 0.4s ease forwards; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
   .step-counter { font-size: 9px; color: #aaa; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
-  .step-name { font-size: 26px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
+  .step-name { font-size: 24px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
 
-  input[type=range] { -webkit-appearance: none; width: 300px; height: 2px; background: #ddd; outline: none; }
+  /* SLIDER */
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
-  .color-grid { display: flex; gap: 20px; justify-content: center; }
-  .color-dot { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; }
+  /* COLOR PALETTE */
+  .color-grid { display: flex; gap: 12px; justify-content: center; align-items: center; }
+  .color-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; position: relative; overflow: hidden; }
   .color-dot.active { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000; }
+  
+  /* カラーピッカーの装飾 */
+  .color-picker-wrapper { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; background: conic-gradient(red, yellow, lime, aqua, blue, fuchsia, red); }
+  #custom-color { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
 
   .finish-area { position: absolute; bottom: 30px; right: 40px; }
 </style>
@@ -129,7 +143,7 @@
 <div id="main-page" class="page">
   <div id="viewer-container">
     <div class="header-logo typo-logo">
-      Horn Generation System
+      Horn Generation<br>System
     </div>
     <div class="download-area">
       <button class="btn-icon" onclick="downloadModel()" title="Download .obj">
@@ -145,30 +159,30 @@
 
   <div id="step-panel">
     <div class="step-nav">
-      <button class="nav-arrow" id="prev-btn" onclick="changeStep(-1)">←</button>
+      <button class="nav-arrow disabled" id="prev-btn" onclick="changeStep(-1)">←</button>
       
       <div id="steps-container">
-        <div class="step-content active" data-step="0">
+        <div class="step-content active">
           <p class="step-counter">STEP 01 / 05</p>
           <p class="step-name">SIZE</p>
           <input id="i-size" type="range" min="1" max="5" value="3">
         </div>
-        <div class="step-content" data-step="1">
+        <div class="step-content">
           <p class="step-counter">STEP 02 / 05</p>
           <p class="step-name">CURVE</p>
           <input id="i-bend" type="range" min="1" max="5" value="3">
         </div>
-        <div class="step-content" data-step="2">
+        <div class="step-content">
           <p class="step-counter">STEP 03 / 05</p>
           <p class="step-name">BUMP</p>
           <input id="i-bump" type="range" min="1" max="5" value="3">
         </div>
-        <div class="step-content" data-step="3">
+        <div class="step-content">
           <p class="step-counter">STEP 04 / 05</p>
           <p class="step-name">BRANCHES</p>
           <input id="i-branch" type="range" min="1" max="5" value="1">
         </div>
-        <div class="step-content" data-step="4">
+        <div class="step-content">
           <p class="step-counter">STEP 05 / 05</p>
           <p class="step-name">COLOR</p>
           <div class="color-grid" id="palette">
@@ -176,7 +190,9 @@
             <div class="color-dot" style="background:#f2f2f2;" data-color="#f2f2f2"></div>
             <div class="color-dot" style="background:#d4a373;" data-color="#d4a373"></div>
             <div class="color-dot" style="background:#8b7355;" data-color="#8b7355"></div>
-            <div class="color-dot" style="background:#1a1a1a;" data-color="#1a1a1a"></div>
+            <div class="color-picker-wrapper" title="Custom Color">
+              <input type="color" id="custom-color" value="#ffffff">
+            </div>
           </div>
         </div>
       </div>
@@ -219,8 +235,12 @@ window.changeStep = (dir) => {
   steps[currentStep].classList.remove('active');
   currentStep = Math.max(0, Math.min(steps.length - 1, currentStep + dir));
   steps[currentStep].classList.add('active');
-  document.getElementById('prev-btn').classList.toggle('disabled', currentStep === 0);
-  document.getElementById('next-btn').classList.toggle('disabled', currentStep === steps.length - 1);
+  
+  // 矢印の状態更新
+  const prev = document.getElementById('prev-btn');
+  const next = document.getElementById('next-btn');
+  prev.classList.toggle('disabled', currentStep === 0);
+  next.classList.toggle('disabled', currentStep === steps.length - 1);
 };
 
 window.newDNA = () => {
@@ -296,6 +316,14 @@ function createSolidHorn(isBranch = false, startPos = new THREE.Vector3(), scale
       indices.push(a, b, d, b, c, d);
     }
   }
+  const bottomCenterIdx = vertices.length / 3;
+  const pStart = curve.getPointAt(0); vertices.push(pStart.x, pStart.y, pStart.z);
+  for (let j = 0; j < radialSegments; j++) indices.push(bottomCenterIdx, j + 1, j);
+  const topCenterIdx = vertices.length / 3;
+  const pEnd = curve.getPointAt(1); vertices.push(pEnd.x, pEnd.y, pEnd.z);
+  const lastRingStart = segments * (radialSegments + 1);
+  for (let j = 0; j < radialSegments; j++) indices.push(topCenterIdx, lastRingStart + j, lastRingStart + j + 1);
+
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   geo.setIndex(indices);
@@ -326,19 +354,30 @@ function animate() {
 }
 
 ['size', 'bend', 'bump', 'branch'].forEach(id => {
-  document.getElementById('i-' + id).oninput = (e) => {
-    settings[id] = parseInt(e.target.value);
-    updateModel();
-  };
+  const el = document.getElementById('i-' + id);
+  if (el) {
+    el.oninput = (e) => {
+      settings[id] = parseInt(e.target.value);
+      updateModel();
+    };
+  }
 });
 
+// カラーパレットのイベント
 document.getElementById('palette').onclick = (e) => {
   if (e.target.classList.contains('color-dot')) {
-    document.querySelector('.color-dot.active').classList.remove('active');
+    document.querySelector('.color-dot.active')?.classList.remove('active');
     e.target.classList.add('active');
     settings.color = e.target.dataset.color;
     updateModel();
   }
+};
+
+// カスタムカラーピッカーのイベント
+document.getElementById('custom-color').oninput = (e) => {
+  document.querySelector('.color-dot.active')?.classList.remove('active');
+  settings.color = e.target.value;
+  updateModel();
 };
 
 window.onresize = () => {
