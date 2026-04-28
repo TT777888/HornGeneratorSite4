@@ -44,16 +44,18 @@
   .intro-logo { font-size: 32px; margin-bottom: 15px; }
   .intro-subtitle {
     font-size: 13px; color: #888; letter-spacing: 0.25em;
-    margin-bottom: 45px; /* ボタン位置を上げるためにマージンをさらに縮小 */
+    margin-bottom: 45px;
   }
   
-  /* ボタン形状: 曲率Rを0（長方形）に */
+  /* 共通ボタン: 長方形・Syne 800 */
   .btn-primary {
     padding: 20px 60px;
     background: var(--text-black); border: none;
-    color: #fff; cursor: pointer; font-size: 11px; letter-spacing: 0.3em;
+    color: #fff; cursor: pointer; 
+    font-family: 'Syne', sans-serif; /* フォント指定を確実化 */
+    font-size: 11px; letter-spacing: 0.3em;
     font-weight: 800; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-    border-radius: 0; /* 角を尖らせる */
+    border-radius: 0; 
     text-transform: uppercase;
   }
   .btn-primary:hover { transform: scale(1.06); opacity: 0.9; }
@@ -62,13 +64,13 @@
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* 左上ロゴ（1行・位置を少し右に調整） */
+  /* 左上ロゴ（位置を微調整） */
   .header-logo {
-    position: absolute; top: 25px; left: 45px; z-index: 200;
+    position: absolute; top: 25px; left: 35px; z-index: 200;
     font-size: 14px;
   }
 
-  /* 右上ダウンロードボタン（円の中に精密アイコン） */
+  /* 右上ダウンロードボタン */
   .download-area {
     position: absolute; top: 25px; right: 40px; z-index: 200;
   }
@@ -86,7 +88,7 @@
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 30px 20px 0 20px; /* パラメータ操作部分の高さを最適化 */
+    padding: 30px 20px 0 20px;
     z-index: 100;
   }
 
@@ -111,23 +113,18 @@
   .step-counter { font-size: 9px; color: #aaa; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
   .step-name { font-size: 26px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
 
-  input[type=range] { -webkit-appearance: none; width: 100%; height: 2px; background: #ddd; outline: none; }
+  input[type=range] { -webkit-appearance: none; width: 300px; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
-  /* COLOR GRID (高さ固定) */
+  /* COLOR GRID */
   .color-grid { display: flex; gap: 15px; justify-content: center; align-items: center; height: 34px; margin-top: 10px; }
   .color-dot { width: 34px; height: 34px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; position: relative; }
   .color-dot.active { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000; }
   .color-picker-wrapper { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; background: conic-gradient(red, yellow, lime, aqua, blue, fuchsia, red); position: relative; overflow: hidden; }
   #custom-color { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; cursor: pointer; }
 
-  /* 再生成ボタンもR:0に */
+  /* REGENERATEボタン: スタートボタンと設定を完全に一致 */
   .finish-area { position: absolute; bottom: 35px; right: 40px; }
-  .btn-regen {
-    padding: 14px 40px; background: #000; color: #fff; border: none;
-    font-family: 'Syne'; font-size: 10px; cursor: pointer; font-weight: 800; 
-    letter-spacing: 0.2em; border-radius: 0; text-transform: uppercase;
-  }
 </style>
 </head>
 <body>
@@ -187,8 +184,7 @@
             <div class="color-dot active" style="background:#ffffff;" data-color="#ffffff"></div>
             <div class="color-dot" style="background:#f2f2f2;" data-color="#f2f2f2"></div>
             <div class="color-dot" style="background:#d4a373;" data-color="#d4a373"></div>
-            <div class="color-dot" style="background:#8b7355;" data-color="#8b7355"></div>
-            <div class="color-picker-wrapper">
+            <div class="color-dot" style="background:#4e4449;" data-color="#4e4449"></div> <div class="color-picker-wrapper">
               <input type="color" id="custom-color" value="#ffffff">
             </div>
           </div>
@@ -199,7 +195,7 @@
     </div>
 
     <div class="finish-area">
-      <button class="btn-regen" onclick="newDNA()">Regenerate</button>
+      <button class="btn-primary" onclick="newDNA()" style="padding: 14px 44px; font-size: 10px;">Regenerate</button>
     </div>
   </div>
 </div>
