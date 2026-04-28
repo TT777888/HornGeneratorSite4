@@ -85,12 +85,12 @@
   .btn-dl-minimal svg { width: 24px; height: 24px; fill: none; stroke: var(--text-black); stroke-width: 1.3; }
   .btn-dl-minimal:hover { border-color: var(--text-black); transform: scale(1.05); }
 
-  /* STEP PANEL (少し上にシフト) */
+  /* STEP PANEL (位置をさらに少し上に) */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 20px 20px 0 20px; /* パディングを詰めて上に寄せる */
+    padding: 15px 20px 0 20px; /* パディングをさらに詰める */
     z-index: 100;
   }
 
@@ -115,7 +115,6 @@
   .step-counter { font-size: 9px; color: #aaa; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
   .step-name { font-family: var(--font-logo); font-size: 26px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
 
-  /* SLIDER AREA & GUIDES */
   .slider-wrapper { position: relative; padding: 0 10px; }
   input[type=range] { -webkit-appearance: none; width: 100%; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
@@ -207,15 +206,14 @@
               <input type="color" id="custom-color" value="#ffffff">
             </div>
           </div>
-          <div class="range-guides" style="width:300px; margin: 10px auto 0 auto;"><span>Light</span><span>Dark</span></div>
-        </div>
+          </div>
       </div>
 
       <button class="nav-arrow" id="next-btn" onclick="changeStep(1)">→</button>
     </div>
 
     <div class="finish-area">
-      <button class="btn-ui-main" onclick="newDNA()" style="padding: 14px 44px; font-size: 10px;">Regenerate</button>
+      <button class="btn-ui-main" onclick="newDNA()" style="padding: 14px 40px; font-size: 10px;">Regenerate</button>
     </div>
   </div>
 </div>
