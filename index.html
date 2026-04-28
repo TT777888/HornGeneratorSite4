@@ -9,16 +9,16 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg-light: #ffffff;
-    --bg-dark: #111111;
+    --bg-white: #ffffff;
     --panel-bg: #f6f6f6;
     --accent: #d4a373;
     --border: #e5e5e5;
+    --text-black: #111111;
   }
   body { 
     font-family: 'Syne', sans-serif; 
-    background: var(--bg-light); 
-    color: #111; 
+    background: var(--bg-white); 
+    color: var(--text-black); 
     overflow: hidden; 
     height: 100vh;
   }
@@ -27,74 +27,85 @@
   .page {
     position: absolute; inset: 0;
     display: none; flex-direction: column;
-    transition: opacity 0.6s ease;
+    opacity: 0; transition: opacity 0.5s ease;
   }
-  .page.active { display: flex; opacity: 1; }
+  .page.active { display: flex; opacity: 1; z-index: 10; }
 
-  /* ── スタート画面 ── */
+  /* ── スタート画面 (白背景・黒ロゴ) ── */
   #intro-page {
-    background: var(--bg-dark);
+    background: var(--bg-white);
     justify-content: center; align-items: center;
     text-align: center;
   }
   .logo-container img {
-    width: 300px; height: auto;
+    width: 320px; height: auto;
     margin-bottom: 40px;
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
   }
   .start-btn {
-    padding: 15px 50px; background: none; border: 1px solid #fff;
-    color: #fff; cursor: pointer; font-size: 14px; letter-spacing: 0.4em;
-    transition: 0.3s;
+    padding: 16px 60px; background: var(--text-black); border: none;
+    color: #fff; cursor: pointer; font-size: 14px; letter-spacing: 0.3em;
+    font-weight: 700; transition: 0.3s;
   }
-  .start-btn:hover { background: #fff; color: #000; }
+  .start-btn:hover { opacity: 0.8; transform: translateY(-2px); }
 
-  /* ── メイン生成画面 ── */
+  /* ── メイン生成画面 (Nike By Youレイアウト) ── */
   #main-page { display: flex; flex-direction: column; }
-  #viewer-container { flex: 1; position: relative; background: #fff; }
+  
+  /* 上部：3Dビューア */
+  #viewer-container { 
+    flex: 1; position: relative; background: #fff; 
+    cursor: grab;
+  }
+  #viewer-container:active { cursor: grabbing; }
 
-  /* 下部ステップパネル (Nike By You風) */
+  /* 下部：ステップパネル */
   #step-panel {
-    height: 240px; background: var(--panel-bg);
+    height: 260px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
     padding: 30px 20px; position: relative;
+    z-index: 100;
   }
 
   .step-nav {
     display: flex; align-items: center; justify-content: center;
-    gap: 40px; width: 100%; max-width: 600px;
+    gap: 50px; width: 100%; max-width: 700px;
   }
   .nav-arrow {
-    width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd;
+    width: 45px; height: 45px; border-radius: 50%; border: 1px solid #ddd;
     background: #fff; cursor: pointer; display: flex; align-items: center;
-    justify-content: center; transition: 0.2s; font-size: 18px;
+    justify-content: center; transition: 0.2s; font-size: 20px;
   }
   .nav-arrow:hover { background: #000; color: #fff; border-color: #000; }
-  .nav-arrow.disabled { opacity: 0.2; cursor: default; }
+  .nav-arrow.disabled { opacity: 0.1; cursor: default; pointer-events: none; }
 
   .step-content {
     text-align: center; flex: 1; display: none;
-    animation: fadeIn 0.4s ease forwards;
   }
-  .step-content.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  .step-content.active { display: block; animation: slideIn 0.4s ease forwards; }
+  
+  @keyframes slideIn { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+  }
 
-  .step-title { font-size: 10px; color: #888; letter-spacing: 0.3em; margin-bottom: 5px; }
-  .step-name { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+  .step-title { font-size: 10px; color: #888; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
+  .step-name { font-size: 24px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.02em; }
 
-  /* スライダー & カラー */
-  input[type=range] { -webkit-appearance: none; width: 280px; height: 2px; background: #ddd; outline: none; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #000; border-radius: 50%; cursor: pointer; }
+  /* スライダー & カラーカスタム */
+  input[type=range] { -webkit-appearance: none; width: 300px; height: 2px; background: #ddd; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; }
 
-  .color-grid { display: flex; gap: 12px; justify-content: center; }
-  .color-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); }
+  .color-grid { display: flex; gap: 15px; justify-content: center; }
+  .color-dot { width: 34px; height: 34px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; }
+  .color-dot:hover { transform: scale(1.1); }
   .color-dot.active { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
 
-  .finish-area { position: absolute; bottom: 20px; right: 40px; }
+  .dna-info { position: absolute; bottom: 25px; left: 40px; font-size: 9px; color: #aaa; letter-spacing: 0.1em; }
+  .finish-area { position: absolute; bottom: 25px; right: 40px; }
   .gen-btn {
-    padding: 10px 20px; background: #000; color: #fff; border: none;
-    font-family: 'Syne'; font-size: 11px; cursor: pointer; font-weight: 700;
+    padding: 12px 24px; background: #000; color: #fff; border: none;
+    font-family: 'Syne'; font-size: 11px; cursor: pointer; font-weight: 700; letter-spacing: 0.1em;
   }
 </style>
 </head>
@@ -102,14 +113,14 @@
 
 <div id="intro-page" class="page active">
   <div class="logo-container">
-    <img src="HornGenerator_rogo.png" alt="Logo">
+    <img src="HornGenerator_rogo_black.png" alt="TSUNO Logo">
   </div>
-  <button class="start-btn" onclick="startApp()">START CUSTOMIZE</button>
+  <button class="start-btn" onclick="startApp()">START CUSTOMIZING</button>
 </div>
 
 <div id="main-page" class="page">
   <div id="viewer-container">
-    <div id="three-canvas"></div>
+    <div id="three-canvas" style="width:100%; height:100%;"></div>
   </div>
 
   <div id="step-panel">
@@ -142,7 +153,7 @@
           <p class="step-name">COLOR</p>
           <div class="color-grid" id="palette">
             <div class="color-dot active" style="background:#ffffff;" data-color="#ffffff"></div>
-            <div class="color-dot" style="background:#e8e7e2;" data-color="#e8e7e2"></div>
+            <div class="color-dot" style="background:#f0f0f0;" data-color="#f0f0f0"></div>
             <div class="color-dot" style="background:#d4a373;" data-color="#d4a373"></div>
             <div class="color-dot" style="background:#8b7355;" data-color="#8b7355"></div>
             <div class="color-dot" style="background:#222222;" data-color="#222222"></div>
@@ -153,6 +164,7 @@
       <button class="nav-arrow" id="next-btn" onclick="changeStep(1)">→</button>
     </div>
 
+    <div class="dna-info" id="dna-text">DNA-ID: #8A4F2C</div>
     <div class="finish-area">
       <button class="gen-btn" onclick="newDNA()">REGENERATE DNA</button>
     </div>
@@ -172,16 +184,19 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+// --- 状態管理 ---
 let settings = { size: 3, bend: 3, bump: 3, branch: 1, color: "#ffffff" };
-let dna = { seedX: 0, seedZ: 0, noise: [] };
+let dna = { seedX: Math.random()*5, seedZ: Math.random()*5, noise: Array.from({length: 120}, () => Math.random()) };
 let currentStep = 0;
 
+// ページ遷移
 window.startApp = () => {
   document.getElementById('intro-page').classList.remove('active');
   document.getElementById('main-page').classList.add('active');
-  initThree();
+  initThree(); // 画面切り替え後に描画開始
 };
 
+// ステップ切り替え (Nike風)
 window.changeStep = (dir) => {
   const steps = document.querySelectorAll('.step-content');
   steps[currentStep].classList.remove('active');
@@ -196,38 +211,51 @@ window.newDNA = () => {
   dna.seedX = Math.random() * 5;
   dna.seedZ = Math.random() * 5;
   dna.noise = Array.from({length: 120}, () => Math.random());
+  document.getElementById('dna-text').innerText = `DNA-ID: #${Math.floor(Math.random()*16777215).toString(16).toUpperCase()}`;
   updateModel();
 };
 
+// --- Three.js ロジック ---
 let scene, camera, renderer, controls, hornGroup;
 
 function initThree() {
-  if (scene) return;
   const container = document.getElementById("viewer-container");
+  if (!container) return;
+
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xffffff);
+
   camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
   camera.position.set(8, 6, 12);
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
   renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   document.getElementById("three-canvas").appendChild(renderer.domElement);
+
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
+
+  // 照明
   scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-  const l = new THREE.DirectionalLight(0xffffff, 1.2); l.position.set(10,20,10); scene.add(l);
+  const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+  sun.position.set(10, 20, 10);
+  scene.add(sun);
+
   hornGroup = new THREE.Group();
   scene.add(hornGroup);
+
   animate();
-  newDNA();
+  updateModel();
 }
 
 function createHornMesh(isBranch = false, startPos = new THREE.Vector3(), scale = 1.0, bId = 0) {
   const points = [];
   const segments = 100;
   const len = settings.size * 1.3 * scale;
-  const bS = settings.bend * 0.3;
+  const bS = settings.bend * 0.3; // 5段階調整
+
   for (let i = 0; i <= 10; i++) {
     const t = i / 10;
     let x, z;
@@ -236,17 +264,21 @@ function createHornMesh(isBranch = false, startPos = new THREE.Vector3(), scale 
       z = Math.cos(t * Math.PI * 0.4 + dna.seedZ) * bS * t * 2.5;
     } else {
       const angle = (bId / settings.branch) * Math.PI * 2 + dna.seedX;
-      x = Math.cos(angle) * (t * 2.2); z = Math.sin(angle) * (t * 2.2);
+      x = Math.cos(angle) * (t * 2.2);
+      z = Math.sin(angle) * (t * 2.2);
     }
     const p = new THREE.Vector3(x, t * len, z);
     if (isBranch) p.add(startPos);
     points.push(p);
   }
+
   const curve = new THREE.CatmullRomCurve3(points);
   const baseR = (isBranch ? 0.18 : 0.45) * (settings.size * 0.1 + 0.8);
   const geo = new THREE.TubeGeometry(curve, segments, baseR, 32, false);
+  
   const pos = geo.attributes.position;
   const tubePts = geo.parameters.path.getPoints(segments);
+
   for (let i = 0; i < pos.count; i++) {
     const tIdx = Math.floor(i / 33);
     const t = tIdx / segments;
@@ -258,7 +290,10 @@ function createHornMesh(isBranch = false, startPos = new THREE.Vector3(), scale 
     pos.setXYZ(i, v.x, v.y, v.z);
   }
   geo.computeVertexNormals();
-  return { mesh: new THREE.Mesh(geo, new THREE.MeshPhysicalMaterial({ color: settings.color, roughness: 0.5, metalness: 0.05, side: 2 })), curve: curve };
+
+  return { mesh: new THREE.Mesh(geo, new THREE.MeshPhysicalMaterial({
+    color: settings.color, roughness: 0.5, metalness: 0.05, side: 2
+  })), curve: curve };
 }
 
 function updateModel() {
@@ -267,12 +302,18 @@ function updateModel() {
     const c = hornGroup.children[0];
     c.geometry.dispose(); c.material.dispose(); hornGroup.remove(c);
   }
+
   const main = createHornMesh();
   hornGroup.add(main.mesh);
-  for (let i = 0; i < settings.branch - 1; i++) {
-    const spawnPos = main.curve.getPointAt(0.25 + i * 0.15);
-    hornGroup.add(createHornMesh(true, spawnPos, 0.5, i).mesh);
+
+  const bc = settings.branch - 1;
+  for (let i = 0; i < bc; i++) {
+    const t = 0.25 + (i * 0.15);
+    const spawnPos = main.curve.getPointAt(t);
+    hornGroup.add(createHornMesh(true, spawnPos, 0.55, i).mesh);
   }
+
+  // 中心調整
   const box = new THREE.Box3().setFromObject(hornGroup);
   const center = box.getCenter(new THREE.Vector3());
   hornGroup.position.set(-center.x, -center.y, -center.z);
@@ -280,12 +321,14 @@ function updateModel() {
 
 function animate() {
   requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
+  if (controls) controls.update();
+  if (renderer && scene && camera) renderer.render(scene, camera);
 }
 
+// イベントリスナー
 ['size', 'bend', 'bump', 'branch'].forEach(id => {
-  document.getElementById('i-' + id).oninput = (e) => {
+  const el = document.getElementById('i-' + id);
+  if (el) el.oninput = (e) => {
     settings[id] = parseInt(e.target.value);
     updateModel();
   };
@@ -302,6 +345,7 @@ document.getElementById('palette').onclick = (e) => {
 
 window.onresize = () => {
   const c = document.getElementById("viewer-container");
+  if (!c || !camera || !renderer) return;
   camera.aspect = c.clientWidth / c.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(c.clientWidth, c.clientHeight);
