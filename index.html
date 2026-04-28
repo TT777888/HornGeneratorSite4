@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TSUNO | HORN GENERATION SYSTEM</title>
+<title>TSUNO | HORN GENERATOR</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap');
 
@@ -29,18 +29,19 @@
   }
   .page.active { display: flex; opacity: 1; z-index: 10; }
 
+  /* ── TYPOGRAPHY ── */
+  .typo-logo {
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
   /* ── START SCREEN ── */
   #intro-page {
     background: var(--bg-white);
     justify-content: center; align-items: center;
     text-align: center;
   }
-  .intro-logo { 
-    font-size: 32px; font-weight: 800; letter-spacing: 0.1em;
-    margin-bottom: 12px; text-transform: uppercase;
-    /* 1行に変更 */
-    white-space: nowrap;
-  }
+  .intro-logo { font-size: 32px; margin-bottom: 12px; }
   .intro-subtitle {
     font-size: 10px; color: #aaa; letter-spacing: 0.25em;
     margin-bottom: 50px;
@@ -50,7 +51,7 @@
     padding: 18px 54px;
     background: var(--text-black); border: none;
     color: #fff; cursor: pointer; font-size: 11px; letter-spacing: 0.25em;
-    font-weight: 800; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 800; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border-radius: 4px; text-transform: uppercase;
   }
   .btn-primary:hover { transform: scale(1.08); opacity: 0.9; }
@@ -59,42 +60,39 @@
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* 左上ロゴ（2行・中央揃え・サイズアップ） */
+  /* 左上ロゴ（1行） */
   .header-logo {
     position: absolute; top: 35px; left: 40px; z-index: 200;
-    font-size: 13px; line-height: 1.3;
-    font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
-    text-align: center; /* シンメトリー */
+    font-size: 14px;
   }
 
-  /* 右上ダウンロードボタン（画像に基づいた二重円・精密トレイ） */
+  /* 右上ダウンロードボタン（外円を削除） */
   .download-area {
     position: absolute; top: 30px; right: 40px; z-index: 200;
   }
-  .btn-dl-circle {
-    width: 64px; height: 64px; background: #fff; 
-    border: 1px solid var(--text-black); border-radius: 50%;
+  .btn-dl-minimal {
+    width: 56px; height: 56px; background: #fff; 
+    border: 1px solid #eee; border-radius: 50%; /* 薄い円のみ */
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: 0.3s; position: relative;
+    cursor: pointer; transition: 0.3s;
   }
-  .btn-dl-circle::after {
-    content: ''; position: absolute; inset: 4px;
-    border: 1px solid #eee; border-radius: 50%;
-  }
-  .btn-dl-circle svg { width: 24px; height: 24px; fill: none; stroke: var(--text-black); stroke-width: 1.5; z-index: 2; }
-  .btn-dl-circle:hover { background: #f9f9f9; transform: scale(1.05); }
+  .btn-dl-minimal svg { width: 22px; height: 22px; fill: none; stroke: var(--text-black); stroke-width: 1.5; }
+  .btn-dl-minimal:hover { border-color: var(--text-black); transform: scale(1.05); }
 
   /* STEP PANEL */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 45px 20px; z-index: 100;
+    padding: 0; /* 内部パーツで調整 */
+    justify-content: center;
+    z-index: 100;
   }
 
   .step-nav {
     display: flex; align-items: center; justify-content: center;
     gap: 70px; width: 100%; max-width: 850px;
+    margin-top: 10px; /* 垂直位置の微調整 */
   }
   .nav-arrow {
     width: 54px; height: 54px; border-radius: 50%; border: 1px solid #ddd;
@@ -105,8 +103,8 @@
   .nav-arrow:hover:not(.disabled) { background: #000; color: #fff; border-color: #000; }
   .nav-arrow.disabled { opacity: 0.1; cursor: default; }
 
-  #steps-container { width: 360px; flex-shrink: 0; }
-  .step-content { text-align: center; display: none; }
+  #steps-container { width: 360px; flex-shrink: 0; min-height: 120px; display: flex; align-items: center; justify-content: center; }
+  .step-content { text-align: center; display: none; width: 100%; }
   .step-content.active { display: block; animation: slideUp 0.4s ease forwards; }
   @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -116,10 +114,11 @@
   input[type=range] { -webkit-appearance: none; width: 100%; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
-  .color-grid { display: flex; gap: 15px; justify-content: center; align-items: center; }
-  .color-dot { width: 34px; height: 34px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; position: relative; overflow: hidden; }
+  /* COLOR STEP LAYOUT FIX */
+  .color-grid { display: flex; gap: 15px; justify-content: center; align-items: center; height: 20px; margin-top: 10px; }
+  .color-dot { width: 34px; height: 34px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; position: relative; }
   .color-dot.active { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000; }
-  .color-picker-wrapper { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; background: conic-gradient(red, yellow, lime, aqua, blue, fuchsia, red); position: relative; }
+  .color-picker-wrapper { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; background: conic-gradient(red, yellow, lime, aqua, blue, fuchsia, red); position: relative; overflow: hidden; }
   #custom-color { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; cursor: pointer; }
 
   .finish-area { position: absolute; bottom: 35px; right: 40px; }
@@ -128,20 +127,18 @@
 <body>
 
 <div id="intro-page" class="page active">
-  <div class="intro-logo">Horn Generation System</div>
+  <div class="intro-logo typo-logo">Horn Generator</div>
   <div class="intro-subtitle">Produced By Shachihata Inc.</div>
   <button class="btn-primary" onclick="startApp()">Start Generating</button>
 </div>
 
 <div id="main-page" class="page">
   <div id="viewer-container">
-    <div class="header-logo">
-      Horn Generation<br>System
-    </div>
+    <div class="header-logo typo-logo">Horn Generator</div>
     <div class="download-area">
-      <button class="btn-dl-circle" onclick="downloadModel()" title="Download .obj">
+      <button class="btn-dl-minimal" onclick="downloadModel()" title="Download .obj">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-width="1.2"></path>
+          <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
           <polyline points="7 11 12 16 17 11"></polyline>
           <line x1="12" y1="16" x2="12" y2="4"></line>
         </svg>
@@ -158,22 +155,22 @@
         <div class="step-content active">
           <p class="step-counter">STEP 01 / 05</p>
           <p class="step-name">SIZE</p>
-          <input id="i-size" type="range" min="1" max="5" value="3">
+          <div style="padding: 0 10px;"><input id="i-size" type="range" min="1" max="5" value="3"></div>
         </div>
         <div class="step-content">
           <p class="step-counter">STEP 02 / 05</p>
           <p class="step-name">CURVE</p>
-          <input id="i-bend" type="range" min="1" max="5" value="3">
+          <div style="padding: 0 10px;"><input id="i-bend" type="range" min="1" max="5" value="3"></div>
         </div>
         <div class="step-content">
           <p class="step-counter">STEP 03 / 05</p>
           <p class="step-name">BUMP</p>
-          <input id="i-bump" type="range" min="1" max="5" value="3">
+          <div style="padding: 0 10px;"><input id="i-bump" type="range" min="1" max="5" value="3"></div>
         </div>
         <div class="step-content">
           <p class="step-counter">STEP 04 / 05</p>
           <p class="step-name">BRANCHES</p>
-          <input id="i-branch" type="range" min="1" max="5" value="1">
+          <div style="padding: 0 10px;"><input id="i-branch" type="range" min="1" max="5" value="1"></div>
         </div>
         <div class="step-content">
           <p class="step-counter">STEP 05 / 05</p>
@@ -345,10 +342,13 @@ function animate() {
 }
 
 ['size', 'bend', 'bump', 'branch'].forEach(id => {
-  document.getElementById('i-' + id).oninput = (e) => {
-    settings[id] = parseInt(e.target.value);
-    updateModel();
-  };
+  const el = document.getElementById('i-' + id);
+  if (el) {
+    el.oninput = (e) => {
+      settings[id] = parseInt(e.target.value);
+      updateModel();
+    };
+  }
 });
 
 document.getElementById('palette').onclick = (e) => {
