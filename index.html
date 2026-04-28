@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TSUNO | HORN GENERATOR</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -13,13 +13,17 @@
     --panel-bg: #f7f7f7;
     --text-black: #000000;
     --border: #e5e5e5;
+    /* ボタン用：視認性の高いシンプルフォント */
+    --font-ui: 'Helvetica Neue', Arial, sans-serif;
+    /* ロゴ用：デザイン性の高いフォント */
+    --font-logo: 'Syne', sans-serif;
   }
   body { 
-    font-family: 'Syne', sans-serif; 
     background: var(--bg-white); 
     color: var(--text-black); 
     overflow: hidden; 
     height: 100vh;
+    font-family: var(--font-ui);
   }
 
   .page {
@@ -29,8 +33,9 @@
   }
   .page.active { display: flex; opacity: 1; z-index: 10; }
 
-  /* ── TYPOGRAPHY ── */
+  /* ── TYPOGRAPHY (Logo) ── */
   .typo-logo {
+    font-family: var(--font-logo);
     font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
     white-space: nowrap;
   }
@@ -44,26 +49,29 @@
   .intro-logo { font-size: 32px; margin-bottom: 15px; }
   .intro-subtitle {
     font-size: 13px; color: #888; letter-spacing: 0.25em;
-    margin-bottom: 45px;
+    margin-bottom: 35px; /* さらに少し位置を上げる */
   }
   
-  /* ボタン共通スタイル (長方形 / Syne 800) */
-  .btn-primary {
-    padding: 18px 54px;
+  /* ボタン: シンプルなフォント / 長方形 */
+  .btn-ui-main {
+    padding: 20px 60px;
     background: var(--text-black); border: none;
-    color: #fff; cursor: pointer; font-size: 11px; letter-spacing: 0.25em;
-    font-weight: 800; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-    border-radius: 0;
+    color: #fff; cursor: pointer; 
+    font-family: var(--font-ui); /* ここをシンプルに */
+    font-size: 12px; letter-spacing: 0.2em;
+    font-weight: 700;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+    border-radius: 0; 
     text-transform: uppercase;
-    font-family: 'Syne', sans-serif;
+    display: inline-block;
   }
-  .btn-primary:hover { transform: scale(1.06); opacity: 0.9; }
+  .btn-ui-main:hover { transform: scale(1.06); opacity: 0.9; }
 
   /* ── MAIN CUSTOMIZER ── */
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* 左上ロゴ（位置をほんの少し左に調整） */
+  /* 左上ロゴ（1行・位置調整） */
   .header-logo {
     position: absolute; top: 25px; left: 35px; z-index: 200;
     font-size: 14px;
@@ -110,7 +118,7 @@
   @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
   .step-counter { font-size: 9px; color: #aaa; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 700; }
-  .step-name { font-size: 26px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
+  .step-name { font-family: var(--font-logo); font-size: 26px; font-weight: 800; margin-bottom: 25px; letter-spacing: -0.01em; }
 
   input[type=range] { -webkit-appearance: none; width: 300px; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
@@ -129,7 +137,7 @@
 <div id="intro-page" class="page active">
   <div class="intro-logo typo-logo">Horn Generator</div>
   <div class="intro-subtitle">Produced By Shachihata Inc.</div>
-  <button class="btn-primary" onclick="startApp()">Start Generating</button>
+  <button class="btn-ui-main" onclick="startApp()">Start Generating</button>
 </div>
 
 <div id="main-page" class="page">
@@ -193,7 +201,7 @@
     </div>
 
     <div class="finish-area">
-      <button class="btn-primary" onclick="newDNA()" style="padding: 14px 40px; font-size: 10px;">Regenerate</button>
+      <button class="btn-ui-main" onclick="newDNA()" style="padding: 14px 44px; font-size: 10px;">Regenerate</button>
     </div>
   </div>
 </div>
