@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TSUNO | BIO-DIGITAL CUSTOMIZER</title>
+<title>TSUNO | HORN GENERATION SYSTEM</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap');
 
@@ -30,26 +30,27 @@
   }
   .page.active { display: flex; opacity: 1; z-index: 10; }
 
+  /* ── TYPOGRAPHY LOGO ── */
+  .typo-logo {
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1;
+  }
+
   /* ── START SCREEN ── */
   #intro-page {
     background: var(--bg-white);
     justify-content: center; align-items: center;
     text-align: center;
   }
-  .logo-container {
-    width: 320px; margin-bottom: 20px;
-  }
-  .logo-container img { width: 100%; height: auto; }
-  
+  .intro-logo { font-size: 32px; margin-bottom: 12px; }
   .intro-subtitle {
-    font-size: 10px; color: #aaa; letter-spacing: 0.2em;
-    margin-bottom: 60px;
+    font-size: 10px; color: #aaa; letter-spacing: 0.25em;
+    margin-bottom: 60px; font-weight: 400;
   }
   
   .btn-primary {
-    padding: 18px 54px;
+    padding: 20px 60px;
     background: var(--text-black); border: none;
-    color: #fff; cursor: pointer; font-size: 11px; letter-spacing: 0.25em;
+    color: #fff; cursor: pointer; font-size: 12px; letter-spacing: 0.3em;
     font-weight: 800; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
     border-radius: 4px; text-transform: uppercase;
   }
@@ -62,28 +63,29 @@
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* UIレイアウト (ロゴ・ダウンロード) */
+  /* UIレイアウト (タイポロゴ・ダウンロードアイコン) */
   .header-logo {
-    position: absolute; top: 30px; left: 40px; z-index: 200;
+    position: absolute; top: 35px; left: 40px; z-index: 200;
+    font-size: 14px;
   }
-  .header-logo img { height: 28px; width: auto; }
 
   .download-area {
     position: absolute; top: 30px; right: 40px; z-index: 200;
   }
-  .btn-download {
-    padding: 12px 24px; background: #fff; border: 1px solid var(--text-black);
-    color: var(--text-black); cursor: pointer; font-size: 10px; letter-spacing: 0.15em;
-    font-weight: 800; border-radius: 4px; text-transform: uppercase; transition: 0.3s;
+  .btn-icon {
+    width: 48px; height: 48px; background: #fff; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border-radius: 4px; transition: 0.3s;
   }
-  .btn-download:hover { background: var(--text-black); color: #fff; transform: translateY(-2px); }
+  .btn-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .btn-icon:hover { background: var(--text-black); color: #fff; transform: translateY(-2px); }
 
   /* STEP PANEL */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 45px 20px; /* パラメータ位置の調整 */
+    padding: 45px 20px;
     z-index: 100;
   }
 
@@ -119,20 +121,24 @@
 <body>
 
 <div id="intro-page" class="page active">
-  <div class="logo-container">
-    <img src="HornGenerator_rogo_black.png" alt="TSUNO">
-  </div>
+  <div class="typo-logo intro-logo">Horn Generation<br>System</div>
   <div class="intro-subtitle">Produced By Shachihata Inc.</div>
   <button class="btn-primary" onclick="startApp()">Start Generating</button>
 </div>
 
 <div id="main-page" class="page">
   <div id="viewer-container">
-    <div class="header-logo">
-      <img src="HornGenerator_rogo_black.png" alt="TSUNO">
+    <div class="header-logo typo-logo">
+      Horn Generation System
     </div>
     <div class="download-area">
-      <button class="btn-download" onclick="downloadModel()">Download Model (.obj)</button>
+      <button class="btn-icon" onclick="downloadModel()" title="Download .obj">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+      </button>
     </div>
     <div id="three-canvas" style="width:100%; height:100%;"></div>
   </div>
@@ -179,7 +185,7 @@
     </div>
 
     <div class="finish-area">
-      <button class="btn-primary" onclick="newDNA()">Regenerate</button>
+      <button class="btn-primary" onclick="newDNA()" style="padding: 14px 40px; font-size: 10px;">Regenerate</button>
     </div>
   </div>
 </div>
@@ -228,12 +234,9 @@ window.downloadModel = () => {
   const result = exporter.parse(hornGroup);
   const blob = new Blob([result], { type: 'text/plain' });
   const link = document.createElement('a');
-  link.style.display = 'none';
-  document.body.appendChild(link);
   link.href = URL.createObjectURL(blob);
   link.download = 'custom_horn.obj';
   link.click();
-  document.body.removeChild(link);
 };
 
 let scene, camera, renderer, controls, hornGroup;
@@ -266,14 +269,8 @@ function createSolidHorn(isBranch = false, startPos = new THREE.Vector3(), scale
   const bS = settings.bend * 0.4;
   for (let i = 0; i <= 10; i++) {
     const t = i / 10;
-    let x, z;
-    if (!isBranch) {
-      x = Math.sin(t * Math.PI * 0.4 + dna.seedX) * bS * t * 2.5;
-      z = Math.cos(t * Math.PI * 0.4 + dna.seedZ) * bS * t * 2.5;
-    } else {
-      const angle = (bId / settings.branch) * Math.PI * 2 + dna.seedX;
-      x = Math.cos(angle) * (t * 2.2); z = Math.sin(angle) * (t * 2.2);
-    }
+    let x = !isBranch ? Math.sin(t * Math.PI * 0.4 + dna.seedX) * bS * t * 2.5 : Math.cos((bId / settings.branch) * Math.PI * 2 + dna.seedX) * (t * 2.2);
+    let z = !isBranch ? Math.cos(t * Math.PI * 0.4 + dna.seedZ) * bS * t * 2.5 : Math.sin((bId / settings.branch) * Math.PI * 2 + dna.seedX) * (t * 2.2);
     points.push(new THREE.Vector3(x, t * len, z).add(startPos));
   }
   const curve = new THREE.CatmullRomCurve3(points);
@@ -299,14 +296,6 @@ function createSolidHorn(isBranch = false, startPos = new THREE.Vector3(), scale
       indices.push(a, b, d, b, c, d);
     }
   }
-  const bottomCenterIdx = vertices.length / 3;
-  const pStart = curve.getPointAt(0); vertices.push(pStart.x, pStart.y, pStart.z);
-  for (let j = 0; j < radialSegments; j++) indices.push(bottomCenterIdx, j + 1, j);
-  const topCenterIdx = vertices.length / 3;
-  const pEnd = curve.getPointAt(1); vertices.push(pEnd.x, pEnd.y, pEnd.z);
-  const lastRingStart = segments * (radialSegments + 1);
-  for (let j = 0; j < radialSegments; j++) indices.push(topCenterIdx, lastRingStart + j, lastRingStart + j + 1);
-
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   geo.setIndex(indices);
@@ -328,7 +317,6 @@ function updateModel() {
   const box = new THREE.Box3().setFromObject(hornGroup);
   const center = new THREE.Vector3(); box.getCenter(center);
   hornGroup.children.forEach(m => m.position.sub(center));
-  controls.target.set(0, 0, 0);
 }
 
 function animate() {
@@ -338,13 +326,10 @@ function animate() {
 }
 
 ['size', 'bend', 'bump', 'branch'].forEach(id => {
-  const el = document.getElementById('i-' + id);
-  if (el) {
-    el.oninput = (e) => {
-      settings[id] = parseInt(e.target.value);
-      updateModel();
-    };
-  }
+  document.getElementById('i-' + id).oninput = (e) => {
+    settings[id] = parseInt(e.target.value);
+    updateModel();
+  };
 });
 
 document.getElementById('palette').onclick = (e) => {
