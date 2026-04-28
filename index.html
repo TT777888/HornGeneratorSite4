@@ -60,33 +60,31 @@
   #main-page { display: flex; flex-direction: column; }
   #viewer-container { flex: 1; background: #fff; position: relative; }
 
-  /* 左上ロゴ（位置をさらに隅へ・2行中央揃え・サイズ大） */
+  /* 左上ロゴ（1行・サイズ大） */
   .header-logo {
-    position: absolute; top: 30px; left: 30px; z-index: 200;
-    font-size: 13px; line-height: 1.3;
-    font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
-    text-align: center;
+    position: absolute; top: 35px; left: 40px; z-index: 200;
+    font-size: 16px;
   }
 
-  /* 右上ダウンロードボタン（精密デザイン） */
+  /* 右上ダウンロードボタン（円の中に精密トレイ） */
   .download-area {
-    position: absolute; top: 30px; right: 30px; z-index: 200;
+    position: absolute; top: 30px; right: 40px; z-index: 200;
   }
   .btn-dl-minimal {
-    width: 56px; height: 56px; background: #fff; 
+    width: 60px; height: 60px; background: #fff; 
     border: 1px solid #ddd; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; transition: 0.3s;
   }
-  .btn-dl-minimal svg { width: 22px; height: 22px; fill: none; stroke: var(--text-black); stroke-width: 1.3; }
+  .btn-dl-minimal svg { width: 24px; height: 24px; fill: none; stroke: var(--text-black); stroke-width: 1.3; }
   .btn-dl-minimal:hover { border-color: var(--text-black); transform: scale(1.05); }
 
-  /* STEP PANEL (高さを引き上げ) */
+  /* STEP PANEL */
   #step-panel {
     height: 280px; background: var(--panel-bg);
     border-top: 1px solid var(--border);
     display: flex; flex-direction: column; align-items: center;
-    padding: 30px 20px 0 20px; /* 上パディングを減らしてコンテンツを上げた */
+    padding: 35px 20px 0 20px;
     z-index: 100;
   }
 
@@ -114,7 +112,8 @@
   input[type=range] { -webkit-appearance: none; width: 100%; height: 2px; background: #ddd; outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #000; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
 
-  .color-grid { display: flex; gap: 15px; justify-content: center; align-items: center; height: 20px; margin-top: 10px; }
+  /* COLOR LAYOUT */
+  .color-grid { display: flex; gap: 15px; justify-content: center; align-items: center; height: 34px; margin-top: 10px; }
   .color-dot { width: 34px; height: 34px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); transition: 0.2s; position: relative; }
   .color-dot.active { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #000; }
   .color-picker-wrapper { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; background: conic-gradient(red, yellow, lime, aqua, blue, fuchsia, red); position: relative; overflow: hidden; }
@@ -133,8 +132,8 @@
 
 <div id="main-page" class="page">
   <div id="viewer-container">
-    <div class="header-logo">
-      Horn Generation<br>System
+    <div class="header-logo typo-logo">
+      Horn Generator
     </div>
     <div class="download-area">
       <button class="btn-dl-minimal" onclick="downloadModel()" title="Download .obj">
@@ -295,7 +294,7 @@ function createSolidHorn(isBranch = false, startPos = new THREE.Vector3(), scale
     const n = frames.normals[i], b = frames.binormals[i];
     for (let j = 0; j <= radialSegments; j++) {
       const theta = (j/radialSegments)*Math.PI*2;
-      const v = new THREE.Vector3().copy(p).add(n.clone().multiplyScalar(Math.cos(theta)*r)).add(b.clone().multiplyScalar(Math.sin(theta) * r));
+      const v = new THREE.Vector3().copy(p).add(n.clone().multiplyScalar(Math.cos(theta) * r)).add(b.clone().multiplyScalar(Math.sin(theta) * r));
       vertices.push(v.x, v.y, v.z);
     }
   }
@@ -334,6 +333,7 @@ function updateModel() {
   const box = new THREE.Box3().setFromObject(hornGroup);
   const center = new THREE.Vector3(); box.getCenter(center);
   hornGroup.children.forEach(m => m.position.sub(center));
+  controls.target.set(0, 0, 0);
 }
 
 function animate() {
